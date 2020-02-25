@@ -1,11 +1,9 @@
 /*import Express from "express";*/
-const express = require("express")
+const express = require('express')
 const app = express();
 
-app.use((req, res, next) => {
-  res.status(200).json({
-    message: 'Works'
-  });
-});
+const studentsRoutes = require('./api/routes/students')
+
+app.use('/students', studentsRoutes)
 
 module.exports = app
