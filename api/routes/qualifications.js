@@ -78,4 +78,25 @@ router.post("/", (req, res, next) => {
       });
   });
 
+  //DELETE
+  router.delete("/:qualificationId", (req, res, next) => {
+    Qualification.remove({ _id: req.params.qualificationId })
+      .exec()
+      .then(result => {
+        res.status(200).json({
+          message: "Qualification deleted",
+          request: {
+            type: "POST",
+            url: "http://localhost:5000/qualifications",
+            body: {qualificationId: "ID"}
+          }
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        });
+      });
+  });
+  
   module.exports = router
