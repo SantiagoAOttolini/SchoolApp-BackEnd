@@ -1,12 +1,14 @@
+//Requiers
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-
-const app = express();
-
 const studentsRoutes = require('./api/routes/students')
 
+//Express app
+const app = express();
+
+//Database connection
 mongoose.connect(
     'mongodb+srv://ivansanti:ivansanti123@schoolapp-db-ekfvn.mongodb.net/test?retryWrites=true&w=majority',
     {
@@ -15,13 +17,16 @@ mongoose.connect(
     }
 )
 
+//Morgan package
 app.use(morgan('dev'))
 
+//BodyParser package
 app.use(bodyParser.urlencoded({
     extended: false
 }))
 app.use(bodyParser.json())
 
+//CORS Errors
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Acces-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Autorization')
@@ -32,8 +37,10 @@ app.use((req, res, next) => {
     next();
 })
 
+//Routes
 app.use('/students', studentsRoutes)
 
+//Error Handling
 app.use((req, res, next) => {
     const error = new Error('Not found')
     error.status = 404

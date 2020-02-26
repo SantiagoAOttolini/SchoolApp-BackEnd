@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 
-
+//Database STUDENT model
 const studentSchema = mongoose.Schema({
+    //ID generated automatically
     _id: mongoose.Schema.Types.ObjectId,
     name: {type: String, required: true},
     lastname: {type: String, required: true},

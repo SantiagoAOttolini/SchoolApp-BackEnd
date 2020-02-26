@@ -1,46 +1,52 @@
+//Requires
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
-
 const Student = require('../models/student') 
 
-//GET
+//GET Request
 router.get('/', (req, res, next) => {
   Student.find()
       .exec()
-      .then(docs => {
-          const response = {
-              count: docs.length,
-              products: docs.map(doc => {
-                  return {
-                      name: doc.name,
-                      lastname: doc.price,
-                      age: doc.age,
-                      class: doc.class,
-                      _id: doc._id,
-                      request: {
+      .then(docs => {  
+        //Create Response
+        const response = {     
+          count: docs.length,
+          //Product MAP       
+          products: docs.map(doc => {           
+            return {           
+              name: doc.name,              
+              lastname: doc.price,                 
+              age: doc.age,                      
+              class: doc.class,                     
+              _id: doc._id,           
+              request: {
                           type: 'GET',
                           url: 'http://localhost:5000/students/' 
                       }
                   }
               })
           }
+          //Status 200 = Ok
           res.status(200).json(response)
       })
       .catch(err => {
           console.log(err)
+          //Status 500 = Database Error
           res.status(500).json({
               error: err
           })
       })
 })
 
-//GET BY ID
+//GetByID Request
 router.get('/:studentId', (req, res, next) => {
+  //Take ID from the URL
   const id = req.params.studentId
   Student.findById(id)
   .exec()
   .then(doc => {
+    // !!CONDITIONAL NOT WORKING!! FIX NEEDED
       if(doc) {
           res.status(200).json({
               student: doc.name,
@@ -48,13 +54,13 @@ router.get('/:studentId', (req, res, next) => {
               age: doc.age,
               class: doc.class,
               request: {
-                  type: 'GET',
-                  url:'http://localhost:5000/products/' + id
+                type: 'GET',
+                url:'http://localhost:5000/products/' + id
               }
           })
-      //REVISAR CONDICIONALES
       } else
       {
+        //Status 404 = Not Found
         res.status(404).json({message: 'No valid entry found for provided ID'})
       }
   })
@@ -64,9 +70,9 @@ router.get('/:studentId', (req, res, next) => {
   })
 })
 
-//POST
+//POST Request
 router.post('/', (req, res, next) => {
-  console.log(req.file)
+  //Create Student instance
   const student = new Student({
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
@@ -74,10 +80,11 @@ router.post('/', (req, res, next) => {
       age: req.body.age,
       class: req.body.class
   })
-
+  //Save on database
   student.save()
       .then(result => {
           console.log(result)
+          //Status 201 = Created
           res.status(201).json({
               message: 'Student created succesfully',
               createdProduct: {
@@ -101,13 +108,16 @@ router.post('/', (req, res, next) => {
       })
 })
 
-//PATCH
+//PATCH Request
 router.patch('/:studentId', (req, res, next) => {
   const id = req.params.studentId
+  //Array of props
   const updateOps= {}
   for (const ops of req.body){
       updateOps[ops.propName] = ops.value
   }
+  //Modify Student (Params ID and $set needed)
+  //$set are the new values
   Student.update({_id: id}, { $set: updateOps })
       .exec()
       .then(result => {
@@ -127,9 +137,10 @@ router.patch('/:studentId', (req, res, next) => {
       })
 })
 
-//DELETE
+//DELETE Request
 router.delete('/:studentId', (req, res, next) => {
   const id = req.params.studentId
+  //Remove student with id
   Student.remove({_id: id})
       .exec()
       .then(result => {
