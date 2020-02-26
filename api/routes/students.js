@@ -110,31 +110,28 @@ router.post('/', (req, res, next) => {
 
 //PATCH Request
 router.patch('/:studentId', (req, res, next) => {
-  const id = req.params.studentId
-  //Array of props
-  const updateOps= {}
-  for (const ops of req.body){
-      updateOps[ops.propName] = ops.value
-  }
-  //Modify Student (Params ID and $set needed)
-  //$set are the new values
-  Student.update({_id: id}, { $set: updateOps })
-      .exec()
-      .then(result => {
-          res.status(200).json({
-              message: 'Student updated',
-              request: {
-                  type: 'GET',
-                  url: 'http://localhost:5000/products/' + id
-              }
-          })
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({
-              error: err
-          })
-      })
+    const id = req.params.studentId
+    const updateOps = {}
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value
+    }
+    Student.update({ _id: id }, { $set: updateOps })
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: 'Student updated',
+                request: {
+                    type: 'GET',
+                    url: 'http://localhost:5000/students/' + id
+                }
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({
+                error: err
+            })
+        })
 })
 
 //DELETE Request
