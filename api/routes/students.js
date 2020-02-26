@@ -12,8 +12,8 @@ router.get('/', (req, res, next) => {
         //Create Response
         const response = {     
           count: docs.length,
-          //Product MAP       
-          products: docs.map(doc => {           
+          //Student MAP       
+          students: docs.map(doc => {           
             return {           
               name: doc.name,              
               lastname: doc.price,                 
@@ -87,7 +87,7 @@ router.post('/', (req, res, next) => {
           //Status 201 = Created
           res.status(201).json({
               message: 'Student created succesfully',
-              createdProduct: {
+              createdStudent: {
                   name: result.name,
                   lastname: result.lastname,
                   age: result.age,
@@ -147,7 +147,7 @@ router.delete('/:studentId', (req, res, next) => {
           res.status(200).json({
               message: 'Student deleted',
               request:{
-                  
+        
               }
           })
       })
