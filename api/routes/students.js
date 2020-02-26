@@ -4,6 +4,38 @@ const mongoose = require('mongoose')
 
 const Student = require('../models/student') 
 
+//GET
+router.get('/', (req, res, next) => {
+  Student.find()
+      .exec()
+      .then(docs => {
+          const response = {
+              count: docs.length,
+              products: docs.map(doc => {
+                  return {
+                      name: doc.name,
+                      lastname: doc.price,
+                      age: doc.age,
+                      class: doc.class,
+                      _id: doc._id,
+                      request: {
+                          type: 'GET',
+                          url: 'http://localhost:5000/products/' 
+                      }
+                  }
+              })
+          }
+          res.status(200).json(response)
+      })
+      .catch(err => {
+          console.log(err)
+          res.status(500).json({
+              error: err
+          })
+      })
+})
+
+//POST
 router.post('/', (req, res, next) => {
   console.log(req.file)
   const student = new Student({
