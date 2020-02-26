@@ -35,6 +35,35 @@ router.get('/', (req, res, next) => {
       })
 })
 
+//GET BY ID
+router.get('/:studentId', (req, res, next) => {
+  const id = req.params.studentId
+  Student.findById(id)
+  .exec()
+  .then(doc => {
+      if(doc) {
+          res.status(200).json({
+              student: doc.name,
+              lastname: doc.lastname,
+              age: doc.age,
+              class: doc.class,
+              request: {
+                  type: 'GET',
+                  url:'http://localhost:5000/products/' + id
+              }
+          })
+      //REVISAR CONDICIONALES
+      } else
+      {
+        res.status(404).json({message: 'No valid entry found for provided ID'})
+      }
+  })
+  .catch(err => {
+      console.log(err)
+      res.status(500).json({error: err})
+  })
+})
+
 //POST
 router.post('/', (req, res, next) => {
   console.log(req.file)
@@ -73,10 +102,8 @@ router.post('/', (req, res, next) => {
 })
 
 //DELETE
-router.delete('/:productId', (req, res, next) => {
-  // saco el id de la req params
-  const id = req.params.productId
-  //remuevo el producto que tenga ese ID
+router.delete('/:studentId', (req, res, next) => {
+  const id = req.params.studentId
   Student.remove({_id: id})
       .exec()
       .then(result => {
