@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
                       _id: doc._id,
                       request: {
                           type: 'GET',
-                          url: 'http://localhost:5000/products/' 
+                          url: 'http://localhost:5000/students/' 
                       }
                   }
               })
@@ -59,9 +59,32 @@ router.post('/', (req, res, next) => {
                   _id: result.id,
                   request: {
                       type: 'POST',
-                      url: 'http://localhost:5000/products/'
+                      url: 'http://localhost:5000/students/'
                   }
               }     
+          })
+      })
+      .catch(err => {
+          console.log(err)
+          res.status(500).json({
+              error: err
+          })
+      })
+})
+
+//DELETE
+router.delete('/:productId', (req, res, next) => {
+  // saco el id de la req params
+  const id = req.params.productId
+  //remuevo el producto que tenga ese ID
+  Student.remove({_id: id})
+      .exec()
+      .then(result => {
+          res.status(200).json({
+              message: 'Student deleted',
+              request:{
+                  
+              }
           })
       })
       .catch(err => {
