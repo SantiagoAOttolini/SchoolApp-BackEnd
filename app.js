@@ -8,7 +8,7 @@ const app = express();
 const studentsRoutes = require('./api/routes/students')
 
 mongoose.connect(
-    'mongodb+srv://ivansanti:' + process.env.MONGO_ATLAS_PW + '@schoolapp-db-ekfvn.mongodb.net/test?retryWrites=true&w=majority',
+    'mongodb+srv://ivansanti:ivansanti123@schoolapp-db-ekfvn.mongodb.net/test?retryWrites=true&w=majority',
     {
         useUnifiedTopology: true,
         useNewUrlParser: true
