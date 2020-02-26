@@ -5,7 +5,37 @@ const mongoose = require('mongoose')
 const Qualification = require('../models/qualification')
 const Student = require('../models/student')
 
+//GET
+router.get("/", (req, res, next) => {
+    Qualification.find()
+      .populate('student', 'name')
+      .exec()
+      .then(docs => {
+        res.status(200).json({
+          count: docs.length,
+          qualifications: docs.map(doc => {
+            return {
+              _id: doc._id,
+              student: doc.student,
+              subject: doc.subject,
+              note: doc.note,
+              request: {
+                type: "GET",
+                url: "http://localhost:5000/qualifications/" + doc._id
+              }
+            };
+          })
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        });
+      });
+  });
 
+
+//POST
 router.post("/", (req, res, next) => {
     Student.findById(req.body.studentId)
       .then(student => {
