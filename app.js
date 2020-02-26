@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const app = express();
 
 const studentsRoutes = require('./api/routes/students')
+const qualificationsRoutes = require('./api/routes/qualifications')
 
 mongoose.connect(
     'mongodb+srv://ivansanti:ivansanti123@schoolapp-db-ekfvn.mongodb.net/test?retryWrites=true&w=majority',
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/students', studentsRoutes)
+app.use('/qualifications', qualificationsRoutes)
 
 app.use((req, res, next) => {
     const error = new Error('Not found')
