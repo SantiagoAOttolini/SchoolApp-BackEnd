@@ -114,7 +114,7 @@ router.patch('/:studentId', (req, res, next) => {
                 message: 'Student updated',
                 request: {
                     type: 'GET',
-                    url: 'http://localhost:5000/products/' + id
+                    url: 'http://localhost:5000/students/' + id
                 }
             })
         })
