@@ -34,6 +34,31 @@ router.get("/", (req, res, next) => {
       });
   });
 
+//GET BY ID
+router.get("/:qualificationId", (req, res, next) => {
+  Qualification.findById(req.params.qualificationId)
+    .populate('student')
+    .exec()
+    .then(qualification => {
+      if (!qualification) {
+        return res.status(404).json({
+          message: "Qualification not found"
+        });
+      }
+      res.status(200).json({
+        qualification: qualification,
+        request: {
+          type: "GET",
+          url: "http://localhost:5000/qualifications"
+        }
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+});
 
 //POST
 router.post("/", (req, res, next) => {
@@ -78,14 +103,14 @@ router.post("/", (req, res, next) => {
       });
   });
 
-  //PATCH
+  /*PATCH
   router.patch('/:qualificationId', (req, res, next) => {
     const id = req.params.qualificationId
     const updateOps = {}
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value
     }
-    Qualification.update({ _id: id }, { $set: updateOps })
+    Qualification.update({ _id: id}, { $set: updateOps })
         .exec()
         .then(result => {
             res.status(200).json({
@@ -102,7 +127,7 @@ router.post("/", (req, res, next) => {
                 error: err
             })
         })
-})
+})*/
 
   //DELETE
   router.delete("/:qualificationId", (req, res, next) => {
