@@ -3,8 +3,10 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+
 const studentsRoutes = require('./api/routes/students')
 const qualificationsRoutes = require('./api/routes/qualifications')
+const userRoutes = require('./api/routes/user');
 
 //Express app
 const app = express();
@@ -41,6 +43,7 @@ app.use((req, res, next) => {
 //Routes
 app.use('/students', studentsRoutes)
 app.use('/qualifications', qualificationsRoutes)
+app.use('/user', userRoutes)
 
 //Error Handling
 app.use((req, res, next) => {
