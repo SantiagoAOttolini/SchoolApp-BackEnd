@@ -2,19 +2,23 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const User = require("../models/user");
 
+//Register
 router.post("/signup", (req, res, next) => {
     User.find({ email: req.body.email })
       .exec()
       .then(user => {
         if (user.length >= 1) {
+        //status 409 = conflict
           return res.status(409).json({
             message: "Mail exists"
           });
         } else {
-          bcrypt.hash(req.body.password, 10, (err, hash) => {
+            //BCRYPT Password encrypt
+            bcrypt.hash(req.body.password, 10, (err, hash) => {
             if (err) {
               return res.status(500).json({
                 error: err
@@ -45,6 +49,7 @@ router.post("/signup", (req, res, next) => {
     });
 });
 
+//Login
 router.post("/login", (req, res, next) => {
     User.find({ email: req.body.email })
       .exec()
@@ -54,12 +59,14 @@ router.post("/login", (req, res, next) => {
             message: "Auth failed"
           });
         }
+        //Compare 2 passwords
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
           if (err) {
             return res.status(401).json({
               message: "Auth failed"
             });
           }
+          //Correct Auth
           if (result) {
             const token = jwt.sign(
               {
@@ -68,7 +75,7 @@ router.post("/login", (req, res, next) => {
               },
               process.env.JWT_KEY,
               {
-                  expiresIn: "1h"
+                expiresIn: "1h"
               }
             );
             return res.status(200).json({
