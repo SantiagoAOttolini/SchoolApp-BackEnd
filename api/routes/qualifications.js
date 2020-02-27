@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
-
 const Qualification = require('../models/qualification')
 const Student = require('../models/student')
+const checkAuth = require ('../middleware/check-auth')
 
 //GET
 router.get("/", (req, res, next) => {
@@ -61,7 +61,7 @@ router.get("/:qualificationId", (req, res, next) => {
 });
 
 //POST
-router.post("/", (req, res, next) => {
+router.post("/", checkAuth, (req, res, next) => {
     Student.findById(req.body.studentId)
       .then(student => {
         if (!student) {
@@ -130,7 +130,7 @@ router.post("/", (req, res, next) => {
 })*/
 
   //DELETE
-  router.delete("/:qualificationId", (req, res, next) => {
+  router.delete("/:qualificationId", checkAuth, (req, res, next) => {
     Qualification.remove({ _id: req.params.qualificationId })
       .exec()
       .then(result => {
@@ -150,4 +150,4 @@ router.post("/", (req, res, next) => {
       });
   });
   
-  module.exports = router
+module.exports = router

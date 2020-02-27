@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const Student = require('../models/student') 
+const checkAuth = require ('../middleware/check-auth')
 
 //GET Request
 router.get('/', (req, res, next) => {
@@ -71,7 +72,7 @@ router.get('/:studentId', (req, res, next) => {
 })
 
 //POST Request
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
   //Create Student instance
   const student = new Student({
       _id: new mongoose.Types.ObjectId(),
@@ -109,7 +110,7 @@ router.post('/', (req, res, next) => {
 })
 
 //PATCH Request
-router.patch('/:studentId', (req, res, next) => {
+router.patch('/:studentId', checkAuth, (req, res, next) => {
     const id = req.params.studentId
     const updateOps = {}
     for (const ops of req.body) {
@@ -135,7 +136,7 @@ router.patch('/:studentId', (req, res, next) => {
 })
 
 //DELETE Request
-router.delete('/:studentId', (req, res, next) => {
+router.delete('/:studentId', checkAuth, (req, res, next) => {
   const id = req.params.studentId
   //Remove student with id
   Student.remove({_id: id})
