@@ -35,10 +35,14 @@ app.use((req, res, next) => {
     res.header('Acces-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Autorization')
     if (req.method === 'OPTIONS') {
         res.header('Acces-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
         return res.status(200).json({})
     }
     next();
 })
+
 
 //Routes
 app.use('/students', studentsRoutes)
