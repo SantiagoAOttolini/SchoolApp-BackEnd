@@ -6,6 +6,38 @@ const jwt = require('jsonwebtoken')
 
 const User = require("../models/user");
 
+router.get('/', (req, res, next) => {
+  User.find()
+      .exec()
+      .then(docs => {  
+        //Create Response
+        const response = {     
+          count: docs.length,
+          //Student MAP       
+          users: docs.map(doc => {           
+            return {           
+              name: doc.email,              
+              lastname: doc.password,                                     
+              _id: doc._id,           
+              request: {
+                          type: 'GET',
+                          url: 'http://localhost:5000/user/' 
+                      }
+                  }
+              })
+          }
+          //Status 200 = Ok
+          res.status(200).json(response)
+      })
+      .catch(err => {
+          console.log(err)
+          //Status 500 = Database Error
+          res.status(500).json({
+              error: err
+          })
+      })
+})
+
 //Register
 router.post("/signup", (req, res, next) => {
     User.find({ email: req.body.email })
