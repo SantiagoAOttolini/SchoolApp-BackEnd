@@ -8,7 +8,7 @@ const checkAuth = require ('../middleware/check-auth')
 //GET
 router.get("/", (req, res, next) => {
     Qualification.find()
-      .populate('student', 'name')
+      .populate('Student', 'name')
       .exec()
       .then(docs => {
         res.status(200).json({
@@ -37,7 +37,7 @@ router.get("/", (req, res, next) => {
 //GET BY ID
 router.get("/:qualificationId", (req, res, next) => {
   Qualification.findById(req.params.qualificationId)
-    .populate('student')
+    .populate('Student')
     .exec()
     .then(qualification => {
       if (!qualification) {

@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
           students: docs.map(doc => {           
             return {           
               name: doc.name,              
-              lastname: doc.price,                 
+              lastname: doc.lastname,                 
               age: doc.age,                      
               class: doc.class,                     
               _id: doc._id,           
