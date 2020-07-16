@@ -1,6 +1,6 @@
 //Requires
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const mongoose = require('mongoose')
 const Student = require('../models/student') 
 const checkAuth = require ('../middleware/check-auth')
