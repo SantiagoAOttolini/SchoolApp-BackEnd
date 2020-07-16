@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const mongoose = require('mongoose')
 const Qualification = require('../models/qualification')
 const Student = require('../models/student')
@@ -23,16 +23,16 @@ router.get("/", (req, res, next) => {
                 type: "GET",
                 url: "http://localhost:5000/qualifications/" + doc._id
               }
-            };
+            }
           })
-        });
+        })
       })
       .catch(err => {
         res.status(500).json({
           error: err
-        });
-      });
-  });
+        })
+      })
+  })
 
 //GET BY ID
 router.get("/:qualificationId", (req, res, next) => {
@@ -43,7 +43,7 @@ router.get("/:qualificationId", (req, res, next) => {
       if (!qualification) {
         return res.status(404).json({
           message: "Qualification not found"
-        });
+        })
       }
       res.status(200).json({
         qualification: qualification,
@@ -51,14 +51,14 @@ router.get("/:qualificationId", (req, res, next) => {
           type: "GET",
           url: "http://localhost:5000/qualifications"
         }
-      });
+      })
     })
     .catch(err => {
       res.status(500).json({
         error: err
-      });
-    });
-});
+      })
+    })
+})
 
 //POST
 router.post("/", checkAuth, (req, res, next) => {
@@ -67,20 +67,20 @@ router.post("/", checkAuth, (req, res, next) => {
         if (!student) {
           return res.status(404).json({
             message: "Student not found"
-          });
+          })
         }
         const qualification = new Qualification({
           _id: mongoose.Types.ObjectId(),
           student: req.body.studentId,
           subject: req.body.subject,
           note: req.body.note
-        });
-        qualification.populate("student").execPopulate();
-        return qualification.save();
+        })
+        qualification.populate("student").execPopulate()
+        return qualification.save()
       })
       .then(result => {
           if(res.statusCode===404){
-              return res;
+              return res
           }
         res.status(201).json({
           message: "Qualification stored",
@@ -94,15 +94,15 @@ router.post("/", checkAuth, (req, res, next) => {
             type: "GET",
             url: "http://localhost:5000/qualifications/" + result._id
           }
-        });
+        })
       })
       .catch(err => {
-        console.log(err);
+        console.log(err)
         res.status(500).json({
           error: err
-        });
-      });
-  });
+        })
+      })
+  })
 
   /*PATCH
   router.patch('/:qualificationId', (req, res, next) => {
@@ -142,13 +142,13 @@ router.post("/", checkAuth, (req, res, next) => {
             url: "http://localhost:5000/qualifications",
             body: {qualificationId: "ID"}
           }
-        });
+        })
       })
       .catch(err => {
         res.status(500).json({
           error: err
-        });
-      });
-  });
+        })
+      })
+  })
   
 module.exports = router
