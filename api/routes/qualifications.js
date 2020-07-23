@@ -104,34 +104,8 @@ router.post("/", checkAuth, (req, res, next) => {
     });
 });
 
-/*PATCH
-  router.patch('/:qualificationId', (req, res, next) => {
-    const id = req.params.qualificationId
-    const updateOps = {}
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value
-    }
-    Qualification.update({ _id: id}, { $set: updateOps })
-        .exec()
-        .then(result => {
-            res.status(200).json({
-                message: 'Qualification updated',
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:5000/qualifications/' + id
-                }
-            })
-        })
-        .catch(err => {
-            console.log(err)
-            res.status(500).json({
-                error: err
-            })
-        })
-})*/
-
 //DELETE
-router.delete("/:qualificationId", checkAuth, (req, res, next) => {
+router.delete("/:qualificationId", (req, res, next) => {
   Qualification.remove({ _id: req.params.qualificationId })
     .exec()
     .then((result) => {
