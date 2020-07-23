@@ -4,6 +4,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Student = require("../models/student");
 const checkAuth = require("../middleware/check-auth");
+const Qualification = require("../models/qualification");
 
 //GET Request
 router.get("/", (req, res, next) => {
@@ -138,12 +139,13 @@ router.patch("/:studentId", checkAuth, (req, res, next) => {
 });
 
 //DELETE Request
-router.delete("/:studentId", checkAuth, (req, res, next) => {
+router.delete("/:studentId", (req, res, next) => {
   const id = req.params.studentId;
   //Remove student with id
   Student.remove({ _id: id })
     .exec()
     .then((result) => {
+    /*Qualification.remove({student._id: id})*/
       res.status(200).json({
         message: "Student deleted",
         request: {},
