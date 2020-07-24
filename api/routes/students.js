@@ -149,6 +149,7 @@ router.delete("/:studentId", (req, res, next) => {
       if (response && response.length) {
         res.status(403).json({
           error: "Can´t delete a student with qualifications",
+          message: "error"
         });
       } else {
         Student.remove({ _id: id })
