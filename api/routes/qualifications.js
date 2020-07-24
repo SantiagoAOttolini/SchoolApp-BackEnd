@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const Qualification = require("../models/qualification");
 const Student = require("../models/student");
 const checkAuth = require("../middleware/check-auth");
+const { replaceOne } = require("../models/student");
+const qualification = require("../models/qualification");
 
 //GET
 router.get("/", (req, res, next) => {
@@ -106,15 +108,16 @@ router.post("/", checkAuth, (req, res, next) => {
 
 //DELETE
 router.delete("/:qualificationId", (req, res, next) => {
-  Qualification.remove({ _id: req.params.qualificationId })
+  const id = req.params.qualificationId;
+  Qualification.remove({ _id: id })
     .exec()
     .then((result) => {
       res.status(200).json({
         message: "Qualification deleted",
         request: {
-          type: "POST",
+          type: "DELETE",
           url: "http://localhost:5000/qualifications",
-          body: { qualificationId: "ID" },
+          body: {qualificationId: id},
         },
       });
     })
@@ -124,5 +127,5 @@ router.delete("/:qualificationId", (req, res, next) => {
       });
     });
 });
-
+   
 module.exports = router;

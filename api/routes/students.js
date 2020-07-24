@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const Student = require("../models/student");
 const checkAuth = require("../middleware/check-auth");
 const Qualification = require("../models/qualification");
+const qualification = require("../models/qualification");
+const { response } = require("express");
 
 //GET Request
 router.get("/", (req, res, next) => {
@@ -57,7 +59,7 @@ router.get("/:studentId", (req, res, next) => {
           class: doc.class,
           request: {
             type: "GET",
-            url: "http://localhost:5000/products/" + id,
+            url: "http://localhost:5000/students/" + id,
           },
         });
       } else {
@@ -141,22 +143,31 @@ router.patch("/:studentId", checkAuth, (req, res, next) => {
 //DELETE Request
 router.delete("/:studentId", (req, res, next) => {
   const id = req.params.studentId;
-  //Remove student with id
-  Student.remove({ _id: id })
+  Qualification.find({ student: id })
     .exec()
-    .then((result) => {
-    /*Qualification.remove({student._id: id})*/
-      res.status(200).json({
-        message: "Student deleted",
-        request: {},
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-      });
+    .then((response) => {
+      if (response && response.length) {
+        res.status(403).json({
+          error: "Can´t delete a student with qualifications",
+        });
+      } else {
+        Student.remove({ _id: id })
+          .exec()
+          .then((result) => {
+            res.status(200).json({
+              message: "Student deleted",
+              request: {},
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+              error: err,
+            });
+          });
+      }
     });
+  //Remove student with id
 });
 
 module.exports = router;
