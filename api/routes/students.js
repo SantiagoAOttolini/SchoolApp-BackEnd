@@ -114,32 +114,6 @@ router.post("/", checkAuth, (req, res, next) => {
     });
 });
 
-//PATCH Request
-router.patch("/:studentId", checkAuth, (req, res, next) => {
-  const id = req.params.studentId;
-  const updateOps = {};
-  for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value;
-  }
-  Student.update({ _id: id }, { $set: updateOps })
-    .exec()
-    .then((result) => {
-      res.status(200).json({
-        message: "Student updated",
-        request: {
-          type: "GET",
-          url: "http://localhost:5000/students/" + id,
-        },
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-      });
-    });
-});
-
 //DELETE Request
 router.delete("/:studentId", (req, res, next) => {
   const id = req.params.studentId;
@@ -149,7 +123,7 @@ router.delete("/:studentId", (req, res, next) => {
       if (response && response.length) {
         res.status(403).json({
           error: "Can´t delete a student with qualifications",
-          message: "error"
+          message: "error",
         });
       } else {
         Student.remove({ _id: id })
@@ -168,7 +142,6 @@ router.delete("/:studentId", (req, res, next) => {
           });
       }
     });
-  //Remove student with id
 });
 
 module.exports = router;

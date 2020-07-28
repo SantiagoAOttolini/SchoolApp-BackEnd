@@ -117,7 +117,7 @@ router.delete("/:qualificationId", (req, res, next) => {
         request: {
           type: "DELETE",
           url: "http://localhost:5000/qualifications",
-          body: {qualificationId: id},
+          body: { qualificationId: id },
         },
       });
     })
@@ -127,5 +127,5 @@ router.delete("/:qualificationId", (req, res, next) => {
       });
     });
 });
-   
+
 module.exports = router;

@@ -39,7 +39,10 @@ app.use((req, res, next) => {
   if (req.method === "OPTIONS") {
     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, GET, DELETE");
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+    );
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept, Authorization"
@@ -53,7 +56,7 @@ app.use((req, res, next) => {
 app.use("/api/students", studentsRoutes);
 app.use("/api/qualifications", qualificationsRoutes);
 app.use("/api/user", userRoutes);
-app.use("/", express.static("public/build"))
+app.use("/", express.static("public/build"));
 
 //Error Handling
 app.use((req, res, next) => {
