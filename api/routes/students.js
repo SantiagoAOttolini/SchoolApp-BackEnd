@@ -5,8 +5,6 @@ const mongoose = require("mongoose");
 const Student = require("../models/student");
 const checkAuth = require("../middleware/check-auth");
 const Qualification = require("../models/qualification");
-const qualification = require("../models/qualification");
-const { response } = require("express");
 
 //GET Request
 router.get("/", (req, res, next) => {
@@ -89,7 +87,6 @@ router.post("/", checkAuth, (req, res, next) => {
   student
     .save()
     .then((result) => {
-      console.log(result);
       //Status 201 = Created
       res.status(201).json({
         message: "Student created succesfully",

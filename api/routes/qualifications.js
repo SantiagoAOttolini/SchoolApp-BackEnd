@@ -4,8 +4,6 @@ const mongoose = require("mongoose");
 const Qualification = require("../models/qualification");
 const Student = require("../models/student");
 const checkAuth = require("../middleware/check-auth");
-const { replaceOne } = require("../models/student");
-const qualification = require("../models/qualification");
 
 //GET
 router.get("/", (req, res, next) => {
