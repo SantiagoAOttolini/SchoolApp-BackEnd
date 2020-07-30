@@ -89,7 +89,6 @@ router.post("/", checkAuth, (req, res, next) => {
   student
     .save()
     .then((result) => {
-      console.log(result);
       //Status 201 = Created
       res.status(201).json({
         message: "Student created succesfully",
@@ -107,7 +106,6 @@ router.post("/", checkAuth, (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         error: err,
       });
