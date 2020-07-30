@@ -57,6 +57,7 @@ app.use("/api/students", studentsRoutes);
 app.use("/api/qualifications", qualificationsRoutes);
 app.use("/api/user", userRoutes);
 app.use("/",express.static("public/build"));
+/*app.use("*", (req, res) => res.sendFile(index.html)); HEROKU FIX*/
 
 //Error Handling
 app.use((req, res, next) => {
